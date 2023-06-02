@@ -5,7 +5,7 @@
 * (including web sites) or distributed to other students.
 *
 * Name: sukhvir singh Student ID: 155312218 Date: 19-05-2023
-* Link:
+* Link: https://gold-lucky-sawfish.cyclic.app/
 *
 ********************************************************************************/
 const express = require('express')
@@ -24,6 +24,9 @@ const { MONGODB_CONN_STRING } = process.env
 app.use(cors())
 app.use(express.json())
 
+//Note: hi professor i was not sure to make the html file, since it was not a requirement from the docx file
+//my api works as long as we test it from the thunder client
+
 app.get('/', (req,res)=>{
     res.json({message: "API Listening"})
 })
@@ -35,7 +38,7 @@ app.post("/api/trips",(req,res)=>{
     db.addNewTrip(data)
     .then((data)=>{
         console.log(`This data has been added ${data}`)
-        res.json({message:"Data has been added"})
+        res.status(201).json(data)
     }).catch((err)=>{
         // Needed to pass valid error code
         res.status(500).json({errorMessage:`Error while Addeding Data`, err})
@@ -57,7 +60,8 @@ app.get("/api/trips",(req,res)=>{
    db.getAllTrips(page,perpage)
         .then((trip)=>{
             console.log(trip)
-            res.json({message:"Successfully retrieved Trips"})
+            //res.json({message:"Successfully retrieved Trips"})
+        	res.status(201).json(trip)
         }).catch((err)=>{
             //needed to pass valid error code
             res.status(500).json({errorMessage:`Error occured while retrieving data ${err}`})
@@ -71,7 +75,7 @@ app.get('/api/trips/:id', (req,res)=>{
     db.getTripById(id)
         .then((trip)=>{
             console.log(trip)
-            res.json("Trip retrieved based on _id")
+        	res.status(201).json(trip)
         }).catch((err)=>{
             // Needed to pass valid error code
             res.status(500).json({errorMessage:`error while getting trip by _id(${id}), ${err}`})
@@ -87,7 +91,7 @@ app.put('/api/trips/:id', (req,res)=>{
 
     db.updateTripById(data, id)
         .then(()=>{
-            res.json("Trip updated succesfully based on id provided")
+        	res.status(201).json(data)
         }).catch((err)=>{
             // Needed to pass valid error code
             res.status(500) .json({errorMessage:`unable to update trip based on id provided: ${err}`})
